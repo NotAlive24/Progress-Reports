@@ -24,3 +24,9 @@ I plan to publish weekly progress reports here.
 
 Feel free to follow my journey or reach out!
 
+---
+
+## Starting time
+
+I will start once I complete and reach THM's red team path.
+

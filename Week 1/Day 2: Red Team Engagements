@@ -1,0 +1,280 @@
+The key to a successful engagement is well-coordinated planning and communication through all parties involved.
+
+Red team engagements come in many varieties; including,
+- Tabletop exercises 
+- Adversary emulation
+- Physical assessment
+
+When you’re doing a red team engagement (or a pentest), **the first and most important thing** is to clearly nail down **what the client actually wants out of it**. These are called **client objectives**.
+
+Why?  
+Because if you don’t have clear, specific objectives from the start, the whole engagement risks turning into a chaotic, unfocused mess. You’ll be running around attacking systems without knowing what matters to the client or what they're trying to test and that’s a waste of time and resources for both sides.
+
+This whole thing is important because the client objectives **set the tone and direction for the entire engagement**. Screw this up, and the rest of your assessment is pretty much doomed to be disorganized and irrelevant.
+
+The next critical piece for any precise and transparent security engagement is **a well-defined scope**. The scope basically outlines what’s fair game and what’s strictly off-limits during a test. And here’s the key part: **the client always defines the scope**.
+If something about the scope is problematic or limits the test’s value, the red team can raise that concern.
+
+No two scopes look the same. But just to give you an idea, here’s what typical scope wording might look like:
+
+- No exfiltration of data.
+- Production servers are off-limits.
+- The subnet `10.0.3.8/18` is out of scope.
+- The subnet `10.0.0.8/20` is in scope.
+- System downtime is not permitted under any circumstances.
+- Exfiltration of PII — that’s personally identifiable information — is prohibited.
+
+**When you get handed a scope like this, don’t just read it once and forget it.**  
+You need to actively analyze what it means operationally. Think about what each of those limits implies for your strategy.
+
+**As a red teamer, your job is to dynamically plan around these rules.** You might even need to draft your initial engagement plans based solely on the objectives and restrictions written into that scope.
+
+**Rules of Engagement**, or **RoE**, are a legally binding agreement that lays out exactly what the client wants, what’s in scope, and what both sides expect from the engagement. Think of it as the first **official document** that kicks off the whole operation.
+
+It’s not optional — it requires proper sign-off and authorization from both the client and the red team before anything happens. Most of the time, this document serves as the **general contract** for the engagement. That said, separate contracts or **Non-Disclosure Agreements (NDAs)** might also be involved alongside it.
+
+Now — here’s the thing: **the format and wording of the RoE matter a lot** because this isn’t just a guideline — it’s a contract. Everything needs to be crystal clear so there are no misunderstandings about what’s allowed and what’s not.
+
+**And one more thing — no two RoEs are the same.**  
+Each one’s structure, length, and sections are typically customized between the client and the red team based on the specific engagement. Some will be short and simple, others might be detailed and extensive. It all depends on what’s being tested and how sensitive the environment is.
+
+Below is a brief table of standard sections you may see contained in the RoE.
+
+| **Section Name**                          | **Section Details**                                                                          |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Executive Summary                         | Overarching summary of all contents and authorization within RoE document                    |
+| Purpose                                   | Defines why the RoE document is used                                                         |
+| References                                | Any references used throughout the RoE document (HIPAA, ISO, etc.)                           |
+| Scope                                     | Statement of the agreement to restrictions and guidelines                                    |
+| Definitions                               | Definitions of technical terms used throughout the RoE document                              |
+| Rules of Engagement and Support Agreement | Defines obligations of both parties and general technical expectations of engagement conduct |
+| Provisions                                | Define exceptions and additional information from the Rules of Engagement                    |
+| Requirements, Restrictions, and Authority | Define specific expectations of the red team cell                                            |
+| Ground Rules                              | Define limitations of the red team cell's interactions                                       |
+| Resolution of Issues/Points of Contact    | Contains all essential personnel involved in an engagement                                   |
+| Authorization                             | Statement of authorization for the engagement                                                |
+| Approval                                  | Signatures from both parties approving all subsections of the preceding document             |
+| Appendix                                  | Any further information from preceding subsections                                           |
+
+Up to this point, we’ve mostly looked at engagement planning and documentation from a **business perspective** stuff like client objectives, scope, and the Rules of Engagement. But now, it’s time to move over to the **campaign planning side**. This is where the red team takes all that business info and figures out **how and what they’re actually going to do** during the engagement.
+
+Now, every internal red team has its own preferred methodology and set of documents for campaign planning. What I’ll walk you through here is one structured approach, it’s an in-depth planning model, originally adapted from military ops documents, broken down into **four different plans**. Each plan has a different focus and level of detail:
+
+| **Type of Plan**     | **What it Does**                                               | **What’s Inside**                                       |
+| :------------------- | :------------------------------------------------------------- | :------------------------------------------------------ |
+| **Engagement Plan**  | The big-picture description of the red team’s technical goals. | CONOPS, resource needs, team members, timelines.        |
+| **Operations Plan**  | A deeper dive that expands on the Engagement Plan’s details.   | Operators, known info, responsibilities, etc.           |
+| **Mission Plan**     | The literal playbook, the commands to run and when.            | Exact commands, time objectives, responsible operators. |
+| **Remediation Plan** | What happens after the operation wraps up.                     | Reports, remediation advice, cleanup actions.           |
+
+---
+
+**Engagement documentation** is basically where you take the ideas from campaign planning and make them official. Now, don’t let the word _document_ fool you. Not every plan needs to be some formal file. Some of these might be as simple as a well-worded email. We’ll get to those cases later, but for now, let’s focus on the technical breakdown of what goes inside each campaign plan.
+
+Starting with the Engagement Plan:
+
+| **Component**                      | **What it’s for**                                                                                                                 |
+| :--------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- |
+| **CONOPS (Concept of Operations)** | A plain-English, non-technical overview of how the red team plans to meet the client’s objectives and go after the targets.       |
+| **Resource Plan**                  | Lays out timelines, personnel needs, hardware, cloud resources — basically anything the team needs to pull this off successfully. |
+
+Next, the Operations Plan:
+
+| **Component**              | **What it’s for**                                                                                                                                       |
+| :------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Personnel**              | Lists who’s needed for the job — operators, support, anyone else.                                                                                       |
+| **Stopping Conditions**    | Defines when and why the team should halt the operation mid-engagement — think: accidental damage, critical vulnerabilities found, legal complications. |
+| **RoE (optional)**         | Can include the Rules of Engagement for reference.                                                                                                      |
+| **Technical Requirements** | Lists the technical knowledge or tools the team needs to succeed in the operation.                                                                      |
+
+Then, the Mission Plan:
+
+|**Component**|**What it’s for**|
+|:--|:--|
+|**Command Playbooks (optional)**|Step-by-step commands, tools, and techniques to use — including when, why, and how. Super handy for bigger teams or mixed-skill operators.|
+|**Execution Times**|When each phase or tool should be launched. Could even include exact timestamps.|
+|**Responsibilities / Roles**|Who’s doing what and when. Keeps things clean and avoids stepping on toes.|
+
+Finally, the Remediation Plan (optional but smart to have):
+
+| **Component**                  | **What it’s for**                                                                                                      |
+| :----------------------------- | :--------------------------------------------------------------------------------------------------------------------- |
+| **Report**                     | A detailed breakdown of what happened during the engagement and what was found.                                        |
+| **Remediation / Consultation** | How the client should clean up, patch, or fix what was uncovered — either inside the report or in a follow-up meeting. |
+
+---
+
+The **Concept of Operations (CONOPS)** is a core part of your **Engagement Plan**. Think of it as the **executive summary** for a red team engagement — the big picture overview meant for both business folks and the technical team. It’s the document leadership can glance at and immediately understand what’s happening without getting lost in technical jargon.
+
+It’s written in a **semi-technical, high-level summary style**. Meaning: you’re assuming the person reading this might know what phishing is, but don’t expect them to follow a payload chain.
+
+That said — you don’t leave out meaningful context. You still include:
+
+- The kind of tools you’ll be using (Cobalt Strike, Metasploit, etc.)
+- What group or threat actor you might be emulating
+- What phases or objectives you’re working through.
+
+**No universal format exists for a CONOPS.** But at minimum, it should cover:
+
+- **Client Name**
+- **Service Provider (your team’s name)**
+- **Timeframe of the engagement**
+- **General objectives and phases** (like Initial Access, Privilege Escalation, Persistence
+- **Other objectives** (if applicable — like testing exfiltration procedures)
+- **High-level tools and techniques you expect to use**
+- **Any known threat group you’re emulating** (like APT29 or FIN7, if this is a threat emulation)
+
+If a client stakeholder or project manager can’t understand it at a glance, you’ve written it wrong.
+
+---
+
+**Resource Plan**  
+It’s the **second part of your Engagement Plan** — and while the **CONOPS is a high-level summary**, the **Resource Plan is a punchy, detailed checklist** of what you need to pull this thing off.
+
+**Key differences:**
+- **Not a narrative. No fluff. No paragraphs.**
+- **Structured as bulleted subsections.**
+
+It covers three main and one optional area(s):
+
+**1. Header**
+
+- Who wrote it
+- For which client
+
+**2. Dates**
+
+- Engagement start & end dates
+- Reconnaissance window
+- Initial Compromise attempts
+- Post-Exploitation / Persistence period
+- Any other key dates (meetings, reporting deadlines, etc.)
+
+**3. Knowledge Required (optional)**  
+If you need niche skills for the op (like Kerberos abuse, Azure AD enumeration, or bypassing EDR X), list them here:
+
+- Reconnaissance knowledge
+- Initial compromise skills
+- Post-exploitation tactics  
+
+**4. Resource Requirements**  
+Break down what physical and virtual assets you need:
+
+- **Personnel:** How many people, what roles (Operator, C2 controller, infrastructure handler, etc.)
+- **Hardware:** VPNs, laptops, network gear
+- **Cloud:** AWS, Azure, GCP instances — number and specs
+- **Miscellaneous:** Licenses, VPN configs, backup infrastructure
+
+**Rule:** If it reads like a novel, you screwed it up. Keep it tight and structured.
+
+---
+
+**Operations Plan**
+Think of this as the **action blueprint**.  
+It’s a **flexible, detail-heavy document** that builds directly off your **CONOPS** and **Resource Plan**. This is where you start putting your moves on paper.
+
+**What’s Inside an Operations Plan**:
+
+**1. Header**
+
+- Who wrote it
+- For which client
+
+**2. Dates**
+
+- Engagement start and end
+- Key operational milestones
+
+**3. Halting/Stopping Conditions**
+
+- Define what events force you to stop immediately.  
+	Example: detection by client security, legal issue, system downtime, hitting out-of-scope assets  
+    (_Optional to include in RoE instead — your call based on how you structure things_)
+
+**4. Required / Assigned Personnel**
+
+- Who’s doing what  
+    Example:
+	- Operator 1 — Initial Compromise
+	- Operator 2 — Persistence & C2 management
+	- Operator 3 — Post-exploitation & lateral movement
+
+**5. Specific TTPs and Attacks Planned**
+
+- List the exact tactics, techniques, and procedures you’re bringing.  
+    Example:
+	- Phishing for initial access
+	- Kerberoasting in post-exploitation
+    - C2 infrastructure: Cobalt Strike beacon over HTTPS
+
+**6. Communications Plan**
+
+- How the team will talk to each other and to the client  
+    Could be:
+	- **vectr.io** (engagement tracking)
+	- **Slack**
+	- **Signal**
+	- **Email**
+	- **Private Discord server**
+	- Even burner SIMs or covert C2 chats for stealth-heavy engagements
+
+**7. Rules of Engagement (optional)**:
+- If your RoE is light, you can expand them here.
+
+If someone can’t pick it up and immediately see how the operation will go down, it’s not done right.
+
+---
+
+**Mission Plan**:
+This is **the operator playbook**.  
+It’s **cell-specific**, **internal**, and **tactical**.  
+Takes all the earlier big-picture planning and converts it into **what each operator’s actually going to do**.
+This is the document that says:
+- Who’s doing what
+- Where they’re doing it
+- What tools they’ll use
+- What to do if something changes
+
+**It’s made for the operators, not the client.**
+
+**What Every Mission Plan Should Include**:
+
+**1. Objectives**  
+What exactly are we trying to pull off?
+- Initial foothold
+- Lateral movement
+- Data exfil
+- Persistence
+
+**2. Operators**  
+Who’s assigned to what task?  
+Name or alias, whatever your team uses.
+
+**3. Exploits / Attacks**  
+Specific techniques and tools  
+Examples:
+
+- CVE-2024-XXXX — RCE exploit
+- Invoke-Kerberoast
+- SSH brute-force with hydra
+
+**4. Targets**  
+Who or what are we hitting?
+
+- Machines by IP/hostname
+- Users by account
+- Objectives by task
+
+**5. Execution Plan Variations**  
+What’s Plan B if Plan A fails?  
+Quick decision trees:
+
+- If phishing fails → switch to password spraying
+- If RCE is patched → move to LPE via kernel exploit
+
+Difference Mission vs Operations Plan
+
+**Operations Plan** = client-facing, covers big-picture actions, timelines, responsibilities, RoE  
+**Mission Plan** = operator-facing, covers exact attacks, commands, timing, targets
+
+If a red team operator can’t open this doc and immediately know what to do when, with what, and to whom — it’s not a mission plan, it’s a wish list.

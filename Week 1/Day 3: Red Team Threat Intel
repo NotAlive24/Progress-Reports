@@ -1,0 +1,195 @@
+**Threat Intelligence (TI)** or **Cyber Threat Intelligence (CTI)** is basically info about how bad actors operate. It covers their **Tactics, Techniques, and Procedures (TTPs)** — how they break into systems, move around, stay hidden, and achieve their goals.
+
+Most of the time, this stuff is collected and used by **defenders** to build better detection and prevention systems. But — if you’re on the offensive side like a red team — you can flip that intel on its head and use it to **mimic real-world attackers**. That’s where **adversary emulation**
+comes in.
+
+**What You Should Be Getting Out of This**:
+- Know the **basics of threat intelligence** and how it connects to offensive operations.
+- Learn how to **build campaigns driven by real-world threat data** instead of making stuff up or relying on generic attacks.
+- Understand and start using **frameworks** like MITRE ATT&CK to map and organize threat intel and operational plans.
+
+Threat intel isn’t just for blue teams. Red teams can and should weaponize it to run smarter, more realistic campaigns that mirror actual adversaries. That’s how you stay sharp and avoid becoming predictable.
+
+---
+
+**Expanding on CTI (Cyber Threat Intelligence)**
+Most defenders use CTI to track how attackers behave over time. They collect things like:
+
+- **IOCs (Indicators of Compromise)** → Think malicious domains, IP addresses, file hashes, suspicious strings in logs, etc.
+- **TTPs (Tactics, Techniques, and Procedures)** → How attackers actually pull off their operations.
+**Where do they get this stuff?**  
+A lot of it comes from **ISACs (Information Sharing and Analysis Centers)** — or in modern CTI lingo, threat intelligence platforms. These act as hubs for sharing intel across industries.
+
+Defenders use CTI to build better defenses.  
+**Your job as a red teamer is to reverse-engineer that intel** — figure out what the blue team’s likely watching for, and how they’re using those IOCs and TTPs in their detections.
+
+---
+
+Red teams use **Cyber Threat Intelligence (CTI)** not to defend, but to **copy how real threat actors behave**. That’s called **adversary emulation**.
+
+They also use frameworks such as **MITRE ATT&CK**, **TIBER-EU**, and **OST Map**.
+
+These cyber frameworks will collect and classify TTPs based on:
+- Which **threat group** uses them
+- What **kill chain phase** they belong to (recon, initial access, etc.)
+- What **tactic** or goal they serve
+- What the **objective** is
+
+**When the red team picks a threat actor to emulate**, the first move is to grab their TTPs and map them to a cyber kill chain to understand their workflow.
+
+**Important note:**  
+This **TTP mapping happens in planning**, not while you’re actively executing the engagement.  
+If it’s a big red team, they might have a **CTI team** doing this prep work for them.
+
+During the engagement, you use that intel to:
+- Build tools that mimic the attacker’s behavior
+- Shape your network traffic to match the expected patterns
+- Act like the real adversary you’re emulating
+It’s all about making defenders think **a real threat group is in their network**.
+
+---
+
+**TIBER-EU** (**T**hreat **I**ntelligence-**b**ased **E**thical **R**ed Teaming):
+
+**TIBER-EU** is a **European cyber resilience framework** built by the **European Central Bank**. It’s designed for financial institutions and infrastructure to test their defenses against advanced attackers, using **real threat intelligence to fuel ethical red team operations**.
+
+Unlike frameworks like **MITRE ATT&CK** that just catalogue attacker behavior, **TIBER-EU mandates that actual threat intel is gathered and directly drives the red team’s tests**.  
+
+Meaning: before you even launch an attack simulation, you get real CTI about what actual threats to that specific institution look like — and then you emulate those exact behaviors.
+
+- It’s mostly a **best practice guide**, not a playbook you can directly pick up and run from an operator’s perspective.
+- Heavy on governance, oversight, and methodology — less about tooling and payloads.
+- It’s one of the few frameworks mandating this tight CTI–to–testing link in regulated financial environments.
+
+---
+
+**TTP Mapping** is what red teams use to **connect an adversary’s known tactics, techniques, and procedures (TTPs) to a cyber kill chain**.  
+Why? So you can plan your engagement like you’re the real attacker, following the exact playbook an actual threat actor would use.
+
+**How it works**:
+
+![[Pasted image 20250708221559.png]]
+
+1. **Pick a target adversary** — usually based on:
+    - The industry you’re targeting
+    - Attack techniques they use
+    - Country of origin
+    - Or other criteria
+
+**Example:**  
+APT39 (Iranian state-backed espionage crew hitting multiple industries)
+
+2. **Use a kill chain** —  
+    In this case: **Lockheed Martin Cyber Kill Chain**
+3. **Grab TTPs from threat intel frameworks**  
+    Start with **MITRE ATT&CK**, which neatly lists known techniques by group.
+
+**Tool of choice:**  
+**ATT&CK Navigator** — a browser-based visualizer where you can load a group’s profile and instantly see their TTPs across different phases.
+
+**Example: APT39 TTP Kill Chain Mapping**
+
+- **Reconnaissance:** No public TTPs — use your own team’s process
+    
+- **Weaponization:**
+    - PowerShell
+    - Python
+    - VBA macros
+    - User-executed attachments
+
+- **Delivery:**
+    - Exploit public apps
+    - Spearphishing
+
+- **Exploitation:**
+    - Registry tweaks
+    - Scheduled tasks
+    - Keylogging
+    - Credential dumping
+
+- **Installation:**
+    - Tool transfer
+    - Proxy chaining
+
+- **C2:**
+    - Web protocols (HTTP/HTTPS)
+    - DNS
+
+- **Actions on Objectives:**
+    - Data exfil over C2 channels
+
+**Other threat intel tools you can pull from**:
+- **OST Map** — visually links actors and TTPs
+- **Mandiant Advantage**
+- **Ontic**
+- **CrowdStrike Falcon**
+
+You map TTPs so you can **run red team ops like the real threat actor you’re simulating** — methodically, by phase, using known tools and behaviors. That’s how proper adversary emulation is done.
+
+---
+
+**Threat intelligence isn’t just for blue teams.** Red teams use it during operations too, to copy how real attackers behave. Not just _what_ they do, but _how_ they do it. This includes:
+
+- How their **C2 (Command & Control) traffic** looks — what headers they use, what URIs they call, what server responses they expect.
+- Which **user agents, ports, and protocols** they prefer.
+- How their **malware behaves**, what syscalls or API calls it makes, and how it hides itself.
+- And even what **IOCs (Indicators of Compromise)** it leaves behind.
+
+example: **malleable C2 profiles** — these let a red team tweak how their C2 server acts to mimic real adversary traffic based on gathered intel like:
+- Host headers
+- POST requests
+- Server responses
+
+Another example: If threat intel says a certain group uses a custom dropper malware that tampers with file signatures and phones home over DNS, you can build a tool that does exactly that to test defenses realistically.
+
+**The goal:** not just to break in, but to emulate an actual adversary’s behavior so defenders are tested against what they’ll face in the wild.
+
+---
+
+A **threat-intel-driven campaign** is a red team operation built around real-world adversary behavior.
+
+### Red Team Thought Process:
+
+1. **Pick a Framework & Kill Chain**
+    - Example: **Lockheed Martin Cyber Kill Chain**
+
+2. **Choose a Threat Group to Emulate**
+    - Example: **APT 41**
+
+3. **Gather That Group’s TTPs & IOCs**
+    - Use tools like **MITRE ATT&CK**, threat reports, and CTI platforms.
+
+4. **Map TTPs to the Kill Chain**
+    - Connect MITRE ATT&CK techniques to each phase of the Lockheed Martin kill chain.
+
+Example:-
+
+| Kill Chain Phase       | MITRE ATT&CK Equivalent       |
+| :--------------------- | :---------------------------- |
+| Recon                  | Reconnaissance                |
+| Weaponization          | Execution                     |
+| Delivery               | Initial Access                |
+| Exploitation           | Initial Access                |
+| Installation           | Persistence / Defense Evasion |
+| Command & Control (C2) | Command and Control           |
+| Actions on Objectives  | Exfiltration / Impact         |
+
+5. **Build Engagement Documentation**
+    - CONOPS, Resource Plan, Operations Plan, Mission Plan, etc.
+
+6. **Prepare Resources**
+    - Set up tools, C2 profiles, infrastructure, listener configs, domains — all tailored to mimic APT 41’s behaviors.
+
+You’re turning real-world attacker data into a staged red team operation, following a known kill chain, to test defenses under realistic conditions. That’s what a threat-intel-driven campaign is.
+
+---
+
+When you plan a red team engagement, **adversary emulation matters** — you're not just hacking randomly, you’re mimicking real-world threats. **Threat intelligence (CTI)** helps you figure out how actual attackers behave: what tools they use, how they move, what they target.
+
+Every red team builds its own way to gather and use this intel. The important part is to approach it from **all angles**:
+
+- How would an attacker pull this off?
+- How would a defender spot or stop it?
+- How can I use what defenders know (CTI) against them to stay stealthy and realistic?
+
+**CTI is your blueprint for playing the part of the threat.** You flip the blue team’s playbook to plan smarter, sneakier, and sharper campaigns.

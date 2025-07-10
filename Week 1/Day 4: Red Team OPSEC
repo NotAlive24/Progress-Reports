@@ -1,0 +1,286 @@
+**OPSEC** (Operations Security) is basically the art of **not giving away your game plan**. The U.S. military coined the term, but in cybersecurity, it’s all about keeping your tactics and tools hidden from whoever’s watching — in our case, usually the **blue team** or third-party monitors.
+
+Even though a red team engagement is legal and authorized, we’re still **going against the defenders**. Their job is to spot us, and our job is to avoid getting caught. That’s why solid OPSEC is crucial. If the blue team figures out what tools you’re using, what IPs you’re coming from, or what you’re planning next — your entire engagement’s blown.
+
+**Key frameworks** like the **Lockheed Martin Cyber Kill Chain** and **MITRE ATT&CK** help defenders recognize attacker behavior patterns. So you need to stay sharp about how your moves might be spotted through those lenses.
+
+![[Pasted image 20250710120501.png]]
+
+**The OPSEC process breaks down into 5 simple steps:**
+1. **Identify critical information** — What details, if leaked, would ruin your operation? (e.g., IP addresses, payload names, phishing domains)
+2. **Analyze threats** — Who’s watching? Who could catch you? (Blue team, SOC, IDS, etc.)
+3. **Analyze vulnerabilities** — Where could your operation slip up and expose itself? (Unmasked C2 traffic, reused infrastructure)
+4. **Assess risks** — How bad would it be if something leaks? What’s the fallout?
+5. **Apply countermeasures** — How do you avoid those leaks? (Separate infrastructure, randomized tool usage, obfuscation)
+
+![[Pasted image 20250710120515.png]]
+
+**Example:**  
+If you scan a network with Nmap from IP `10.0.0.5` and later use that same IP to host a phishing site, congrats — you just exposed your whole campaign. The blue team will tie those actions together and know it’s you.
+
+OPSEC isn’t a checklist — it’s a **constant, active process** you run in your head before, during, and after every operation to avoid exposing your tactics and infrastructure.
+
+---
+
+**Step 1 in OPSEC: Critical Information Identification**:
+
+**Critical Information Identification** is about knowing **what info you absolutely cannot afford to let the blue team get their hands on**. It’s not just passwords or secret exploits — it’s anything that, if exposed, makes your life harder or blows your cover.
+
+**What counts as critical info?**  
+Anything the defenders would love to know that would let them spot, stop, or counter your operation. It’s not always ultra-sensitive — it’s what’s operationally damaging if it leaks.
+
+stuffs you have to lock down:
+- **Client intel you’ve discovered**  
+    No sharing employee names, infrastructure layouts, or systems info you’ve mapped. Keep it on a strict **need-to-know basis**. Stick to the **Principle of Least Privilege (PoLP)** — only the people who _absolutely_ need it, get it.
+- **Red team internal details**  
+    Who’s on your team, what you’re doing, your attack plans, what you can and can’t do. If the blue team figures out your playbook or weaknesses — you’re done.
+- **Your TTPs (Tactics, Techniques, and Procedures)**  
+    Don’t give away how you’re going to hit them. Once they know your methods, they’ll set up defenses exactly where you’re headed.
+- **The OS, cloud provider, or C2 framework you’re using**  
+    If they know you’re operating from a Pentoo box or using a specific C2 tool, they can monitor logs for those fingerprints and smoke you out.
+- **Your public IP addresses**  
+    If they find your IPs, one firewall rule later and you’re locked out. Never reuse or leave these exposed.
+- **Your registered domains**  
+    Got phishing or payload domains? If the defenders spot those early, they’ll block or sinkhole them before you land a single credential.
+- **Your hosted phishing sites or payload servers**  
+    Same deal — if your infrastructure gets exposed, your campaign’s over.
+
+Anything that reveals your intentions, tools, infrastructure, or game plan is **critical info**. Identify it early, treat it like gold, and make sure it stays buried from the blue team.
+
+---
+
+**Step 2 in OPSEC: Threat analysis**:
+
+Once you’ve figured out what info is critical, **next step is threat analysis**.  
+That means: **who’s out there that could mess up your operation, what do they want, what can they do, and what have they already got on you?**
+
+You’re asking four things:
+
+1. **Who’s the adversary?**
+2. **What do they want?**
+3. **How do they work? (their TTPs)**
+4. **Have they already grabbed any of your critical info?**
+
+For a red team op, **your main adversary is the blue team** — because your mission is to sneak in and theirs is to keep you out.  
+Simple conflict of objectives.
+
+**Blue Team:**
+
+- **Intentions:** Block you
+- **Capabilities:** Might be unknown at the start, but you’ll find out as you go
+
+**But — it’s not just them.**  
+There might also be **malicious third parties** on the network — random attackers, or someone else who might blow your cover or trigger defenses before you do.
+
+Adversary Table:
+
+|Adversary|Intentions|Capabilities|
+|:--|:--|:--|
+|**Blue Team**|Keep intruders out|Not always known|
+|**Malicious third-party**|Varies|Varies|
+> **Threat = Adversary + Intent + Capability**
+
+If one of those is missing, it’s **not a threat to you**.  
+Meaning: if someone _can’t_ stop you, or _doesn’t care_ to, or _isn’t around_, they’re not your problem.
+
+You only worry about those who both **want to stop you** and **can actually do it**.
+
+---
+
+**Step 3 in OPSEC: Analyze Vulnerabilities**
+
+**Important:**  
+We're not talking about software bugs here — this is about **ways your critical info could leak** and let the blue team or others ruin your op.
+
+![[Pasted image 20250710121909.png]]
+
+**What’s an OPSEC vulnerability?**  
+When an adversary can:
+- **Get hold of your critical info**
+- **Understand what it means**
+- **Use it to screw up your plan**
+
+**Examples:**
+
+1. **Using the same IP for everything**
+- You scan with Nmap
+- You host phishing pages
+- You run Metasploit exploits  
+    → Blue team catches one, blocks the IP — and suddenly your phishing server, scans, and exploits all die together. That’s bad OPSEC.
+
+1. **Unsecured phishing database**
+- Victim data (usernames, passwords) saved to an open or weakly secured DB  
+    → A third party or even blue team finds it. Now, your operation’s burned and your client’s info is at risk.
+
+1. **Loose lips on social media**
+
+- A teammate posts something dumb like “Fun op for `[CLIENT NAME]` this week!”  
+    → If blue team’s watching social channels (they should be), now they know what’s coming and can harden defenses.
+
+Anything that lets the defenders **connect your actions** or **spot your tools, infrastructure, or plans** is an OPSEC vulnerability.  
+**Your job is to plug those leaks.**
+
+---
+
+**Step 4 in OPSEC: Risk Assessment**:
+
+After identifying your critical info, potential threats, and where you’re exposed, you now **assess the actual risk** those vulnerabilities pose.
+
+**What’s risk assessment?**  
+It’s figuring out:
+
+- **How likely is it that a threat will exploit a vulnerability?**
+- **What would it cost you if they did?**
+
+In OPSEC terms — you’re deciding what could realistically happen, how bad it would be, and whether it’s worth addressing right now.
+
+### How do you measure risk?
+
+By looking at **three things**:
+
+1. **Effectiveness of the countermeasure:**  
+    Will your fix or mitigation _actually reduce the risk_? No point adding a control that barely changes anything.
+2. **Cost vs impact:**  
+    Is the **time, money, or effort** to fix it worth it, compared to what damage would occur if it got exploited?
+3. **Operational impact of the countermeasure:**  
+    Will deploying the countermeasure **expose you further or give away your presence/intentions** to the adversary (in this case, the blue team)?
+
+### Example Breakdown:
+
+**Example 1: Using the same public IP for everything**
+
+- **Vulnerability:** All your actions (scanning, exploiting, phishing) from the same IP.
+- **Threat:** The blue team’s SIEM.
+- **Risk assessment:**
+    - If they have a **SIEM and good monitoring**, odds are high they’ll catch one activity and then block that IP, instantly shutting down everything else tied to it.
+    - **High risk** if defenses are solid.
+    - If the client barely monitors logs or has no SIEM, the chance of detection is low.
+    - **Low risk** if defenses are weak.
+
+**Example 2: Unsecured phishing database**
+
+- **Vulnerability:** Phishing victim data stored on a poorly secured server.
+- **Threat:** Random internet bots and opportunistic attackers.
+- **Risk assessment:**
+    - Research shows automated scanners constantly look for open, unsecured systems.
+    - It’s not a matter of _if_, but _when_ one of them finds it.
+    - Even without targeted action by the blue team, you’re at **high risk**.
+
+Without doing this assessment, you either overreact to harmless risks or leave critical vulnerabilities wide open. **Good OPSEC means knowing what matters, what doesn’t, and where to spend your effort.**
+
+---
+
+**Step 5 in OPSEC: Apply Countermeasures**:
+
+Once you know where you’re vulnerable and what the risks are, it’s time to do something about it.
+
+**What are countermeasures?**  
+Tactics or controls that:
+- **Prevent an adversary from detecting critical information**
+- **Mislead them (deception)**
+- Or **deny them access altogether**
+
+Basically, you either hide it, fake it, or block them from getting it.
+
+**Example 1: Same public IP for multiple attack stages**
+- **Risk:** Detection of one activity reveals the rest.
+- **Countermeasure:**  
+    → Use **different public IP addresses** for scanning, phishing, and exploitation.  
+    → Could also rotate IPs regularly and use different infrastructure providers (cloud/VPS) for each purpose.
+
+If the blue team blocks the scanning IP, your phishing campaign or C2 infrastructure remains untouched.
+
+**Example 2: Unsecured phishing database**
+- **Risk:** Bots or attackers randomly stumble upon it and steal sensitive captured credentials.
+- **Countermeasure:**  
+    → **Properly secure the database**:
+    - Strong credentials
+    - Limit access by IP allowlists
+    - Keep it behind a firewall or VPN
+    - Encrypt stored data  
+        → Optionally, log and monitor access attempts to spot intrusion attempts.
+
+Even if the phishing page is detected or random bots hit your IP, the database holding victim data stays protected.
+
+**Key Principle**:
+
+When choosing a countermeasure:
+- Make sure it meaningfully reduces risk.
+- Ensure it’s worth the cost/effort.
+- And confirm it won’t inadvertently expose your operation further.
+
+OPSEC isn’t about eliminating all risks — it’s about reducing critical ones to an acceptable level while keeping your operation effective. Countermeasures are where your risk assessment translates into action.
+
+---
+
+**Applying OPSEC Process: Example — Red Team Programs / OS / VM**
+
+**Identify Critical Information**:
+- **OS and VM identifiers** (hostname, OS type/version)
+- **Tools/program versions**
+- Anything that, if logged, could link your operation together.
+
+**Analyse Threats**:
+- **The blue team.**  
+    They’re watching for weird activity in logs — VPN connections, DHCP leases, user-agents, unusual hostnames, OS fingerprints, scanner signatures.
+
+**Their goals:**
+- Detect, log, and attribute any suspicious behavior.
+- Correlate different actions to one actor.
+
+**Analyse Vulnerabilities**:
+
+- A **unique OS** like **Kali Linux** stands out in logs.
+- **Obvious VM hostnames** like `kali2024vm`, `attackbox`, or `pentest-lab` get flagged.
+- **Default tool signatures** (like `Nmap Scripting Engine` in user agents) are dead giveaways.
+- **VPN log leaks** can reveal OS, IP, and activity timing.
+- Web-based activities may expose your **HTTP User-Agent** string.
+
+**Assess Risk**:
+
+- **High risk** if connecting to critical services (VPNs, internal systems). Logs will capture details.
+- **Moderate risk** for external recon activities (as long as you rotate IPs and cover tracks).
+- **Low risk** if connecting to public services through proxies or throwaway infrastructure.
+
+If your operation depends on stealth, even minor signature leaks can link multiple actions together — and that’s a big problem.
+
+
+**Apply Countermeasures**:
+
+✅ **Camouflage your OS / VM:**
+- Use **common OS images**.
+- Modify **OS banners, version numbers, and fingerprints**.
+- Rename your VM hostnames to match the client’s naming convention — `desktop-234`, `laptop-john`, `server-dc01`, etc.
+
+✅ **Sanitize tool signatures:**
+
+- Learn what signatures tools leave behind.
+- For Nmap, replace the user agent
+- Use malleable C2 profiles for your implants so traffic mimics common services.
+
+✅ **Network OPSEC:**
+- Use different IPs for different activities.
+- Avoid using the same VPN endpoint for scanning and exploitation.
+- Isolate infrastructure for phishing, C2, and recon.
+
+![[Pasted image 20250710125554.png]]
+
+This isn’t theory — in real ops, these tiny details get you caught. Good OPSEC is about sweating the small stuff before the blue team does.
+
+---
+
+we broke down how the **OPSEC process** applies to red team operations. It’s made up of **five steps**:
+
+1. **Identify Critical Information:**  
+    Things like the red team’s plans, tools, infrastructure, capabilities, and limitations — basically, anything that, if exposed, could mess up the operation.
+2. **Analyze Threats:**  
+    Figure out who might be trying to stop you (blue team, third parties) and what they’re capable of doing.
+3. **Analyze Vulnerabilities:**  
+    Find out where you might be exposing critical info. If the enemy can see it, link it together, and react — it’s a problem.
+4. **Assess Risks:**  
+    Determine the chance of those vulnerabilities being exploited and what it’ll cost you if they are.
+5. **Apply Countermeasures:**  
+    Take steps to hide, mislead, or deny that critical info to your adversary. Obfuscate, separate, and secure anything that could give you away.
+
+OPSEC isn’t just military stuff — it works anywhere you need to protect sensitive planning and activities. In red teaming, it keeps your operation alive by preventing the defenders from catching on too soon.
+
